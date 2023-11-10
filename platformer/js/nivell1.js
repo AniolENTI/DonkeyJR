@@ -37,7 +37,7 @@ class nivell1 extends Phaser.Scene
         this.map.addTilesetImage('tileset_water');
 
         //Pinto las CAPAS/LAYERS
-        this.walls = this.map.createLayer('layer_platforms','tileset_platform');
+        this.platforms = this.map.createLayer('layer_platforms','tileset_platform');
         this.ground = this.map.createLayer('layer_ground','tileset_ground');
         this.vines = this.map.createLayer('layer_vines','tileset_vine');
         this.water = this.map.createLayer('layer_water','tileset_water');
