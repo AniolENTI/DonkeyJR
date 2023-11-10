@@ -57,13 +57,14 @@ class nivell1 extends Phaser.Scene
         this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
         this.scoreText.setFont('PressStart2P-Regular');
 
-        this.hero = new heroPrefab(this,65,100,'hero');
+        this.hero = new heroPrefab(this,18,216,'hero');
 
         this.fruit = new fruitPrefab(this,65, 140,'apple');
 
         this.loadAnimations();
 
         this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
     }
@@ -79,7 +80,7 @@ class nivell1 extends Phaser.Scene
         {
             key: 'run',
             frames:this.anims.generateFrameNumbers('hero', {start:0, end: 3}),
-            frameRate: 6,
+            frameRate: 10,
             repeat: -1
         });
     }
@@ -91,9 +92,17 @@ class nivell1 extends Phaser.Scene
         this.score += 100;
         this.scoreText.setText(`Score: ${this.score}`);
     }
+
+    die()
+    {
+        this.scene.restart();
+    }
     
     update()
     { 
-        
+        if(this.hero.y >= gamePrefs.gameHeight-16)
+        {
+            this.die();
+        }
     }
 }
