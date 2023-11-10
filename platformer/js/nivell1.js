@@ -10,10 +10,8 @@ class nivell1 extends Phaser.Scene
         this.cameras.main.setBackgroundColor("0000"); 
         this.load.setPath('assets/sprites');
 
-        this.load.spritesheet('hero','hero.png',
-        {frameWidth:32,frameHeight:32});
-        this.load.spritesheet('jumper','jumper.png',
-        {frameWidth:32,frameHeight:32});
+        this.load.spritesheet('hero','spr_donkey_jr.png',
+        {frameWidth:32,frameHeight:16});
 
         this.load.setPath('assets/tilesets');
         this.load.image('tileset_platform','tileset_platform.png');
@@ -44,17 +42,13 @@ class nivell1 extends Phaser.Scene
         this.vines = this.map.createLayer('layer_vines','tileset_vine');
         this.water = this.map.createLayer('layer_water','tileset_water');
 
-        //Defino con qué se colisiona en la layer_walls
-        //this.map.setCollisionBetween(1,11,true,true,'layer_walls');
-        //Ponemos -1, ya que phaser lo interpreta como un 0 en el json 
+        //Defino con qué se colisiona
         this.map.setCollisionByExclusion(-1,true,true,'layer_platforms'); 
         this.map.setCollisionByExclusion(-1,true,true,'layer_ground');
 
-        this.hero = new heroPrefab(this,65,100);
+        this.hero = new heroPrefab(this,65,100,'hero');
 
         this.loadAnimations();
-
-        this.jumper = new jumperPrefab(this,240,304);       
 
         this.cursors = this.input.keyboard.createCursorKeys();
     }
@@ -69,17 +63,9 @@ class nivell1 extends Phaser.Scene
         this.anims.create(
         {
             key: 'run',
-            frames:this.anims.generateFrameNumbers('hero', {start:2, end: 5}),
+            frames:this.anims.generateFrameNumbers('hero', {start:0, end: 3}),
             frameRate: 10,
             repeat: -1
-        }); 
-        
-        this.anims.create
-        ({
-            key:'jumper',
-            frames:this.anims.generateFrameNumbers('jumper',{start:0,end:3}),
-            frameRate:10,
-            repeat:-1
         });
     }
     

@@ -1,6 +1,6 @@
 class heroPrefab extends Phaser.GameObjects.Sprite 
 {
-    constructor(_scene,_posX,_posY,_spriteTag='hero')
+    constructor(_scene,_posX,_posY,_spriteTag)
     { //instanciar el objeto
         super(_scene,_posX,_posY,_spriteTag);
         _scene.add.existing(this);
@@ -50,7 +50,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
 
         if(!this.hero.body.onFloor())
         {
-            this.hero.anims.stop().setFrame(6);
+            this.hero.anims.stop().setFrame(4);
         }
         
         super.preUpdate(time, delta);
