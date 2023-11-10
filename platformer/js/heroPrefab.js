@@ -52,6 +52,11 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         {
             this.hero.anims.stop().setFrame(4);
         }
+
+        if(this.hero.body._posY < 16)
+        {
+            //gamePrefs.scene.reset();
+        }
         
         super.preUpdate(time, delta);
     }

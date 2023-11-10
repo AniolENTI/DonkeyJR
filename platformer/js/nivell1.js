@@ -71,6 +71,6 @@ class nivell1 extends Phaser.Scene
     
     update()
     { 
-
+        
     }
 }
