@@ -1,9 +1,7 @@
 var gamePrefs=
 {
-    gameWidth:960,
-    gameHeight:540,
-    level1Width:1280, //40*32
-    level1Height:800, //25+32
+    gameWidth:256,
+    gameHeight:240,
     HERO_SPEED:200,
     HERO_JUMP:450,
     HERO_GRAVITY:1000,
@@ -15,7 +13,7 @@ var config =
     type: Phaser.AUTO,
     width: gamePrefs.gameWidth,
     height: gamePrefs.gameHeight,
-    scene:[level1], //array con las escenas
+    scene:[nivell1], //array con las escenas
     render:
     {
         pixelArt:true
@@ -23,8 +21,8 @@ var config =
     scale:
     {
         mode:Phaser.Scale.FIT,
-        width:gamePrefs.gameWidth/2,
-        height:gamePrefs.gameHeight/2,
+        width:gamePrefs.gameWidth,
+        height:gamePrefs.gameHeight,
         autoCenter:Phaser.Scale.CENTER_BOTH
     }
     ,
