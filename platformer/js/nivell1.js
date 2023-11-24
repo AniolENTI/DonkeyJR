@@ -60,7 +60,7 @@ class nivell1 extends Phaser.Scene
         this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
         this.scoreText.setFont('PressStart2P-Regular');
 
-        this.enemy = new enemyPrefab(this,50,50,200,'blue');
+        this.enemy = new enemyPrefab(this,55,55,200,'blue');
         this.hero = new heroPrefab(this,18,200,'hero');
 
         this.fruit = new fruitPrefab(this,65, 140,'apple');
