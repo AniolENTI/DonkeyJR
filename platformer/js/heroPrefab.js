@@ -9,6 +9,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         this.hero = this;
         this.setColliders();
         this.cursors = this.scene.input.keyboard.createCursorKeys();
+        this.isClimbing = false;
     }
 
     setColliders()
@@ -53,7 +54,8 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         if(this.cursors.space.isDown
           //&& this.hero.body.blocked.down
           && this.hero.body.onFloor()
-          && Phaser.Input.Keyboard.DownDuration(this.cursors.space,250))
+          && Phaser.Input.Keyboard.DownDuration(this.cursors.space,250)
+          && !this.isClimbing)
         {
             this.hero.body.setVelocityY(-gamePrefs.HERO_JUMP);
         }
@@ -64,5 +66,27 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         }
 
         super.preUpdate(time, delta);
+
+        if(this.cursors.up.isDown
+            && this.hero.isClimbing)
+        {
+            this.hero.body.setVelocityY(-gamePrefs.HERO_CLIMB)
+        }
+
+        if(this.cursors.down.isDown
+            && this.hero.isClimbing)
+        {
+            this.hero.body.setVelocityY(gamePrefs.HERO_CLIMB)
+        }
+    }
+
+    climb()
+    {
+        this.isClimbing = true;
+    }
+
+    unClimb()
+    {
+        this.isClimbing = false;
     }
 }
