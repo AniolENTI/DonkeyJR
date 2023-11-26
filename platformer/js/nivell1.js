@@ -71,6 +71,9 @@ class nivell1 extends Phaser.Scene
 
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        
+        var vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
     }
     /*
     loadSounds()
@@ -87,6 +90,14 @@ class nivell1 extends Phaser.Scene
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create(
+            {
+                key: 'climb',
+                frames:this.anims.generateFrameNumbers('hero', {start:5, end: 6}),
+                frameRate: 10,
+                repeat: -1
+            });
         this.anims.create(
         {
                 key: 'enemy_blue_h',
@@ -114,6 +125,16 @@ class nivell1 extends Phaser.Scene
         if(this.hero.y >= gamePrefs.gameHeight-16)
         {
             this.die();
+        }
+
+        this.vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
+        if(this.vineTile && this.vineTile.index > 0)
+        {
+            this.hero.climb();
+        }
+        else
+        {
+            this.hero.unClimb();
         }
     }
 }
