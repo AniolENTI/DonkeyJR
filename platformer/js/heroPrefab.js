@@ -29,6 +29,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
             this.scene.ground
         );
     }
+    
 
     preUpdate(time,delta)
     {
