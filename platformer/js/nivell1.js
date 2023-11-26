@@ -86,6 +86,14 @@ class nivell1 extends Phaser.Scene
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create(
+            {
+                key: 'climb',
+                frames:this.anims.generateFrameNumbers('hero', {start:5, end: 6}),
+                frameRate: 10,
+                repeat: -1
+            });
     }
 
     addScore(hero,fruit)
