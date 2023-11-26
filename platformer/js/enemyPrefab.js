@@ -16,19 +16,17 @@ class enemyPrefab extends Phaser.GameObjects.Sprite
 
     setColliders()
     {
-        this.scene.physics.add.collider
+        /*  this.scene.physics.add.collider
         (
-            this.scene.hero,
+             this.scene.hero,
             this.enemy,
-            this.scene.die,
-            null,
-            this.scene.hero
-        );
-
+             this.scene.die
+         );
+ */
         this.scene.physics.add.collider
         (
             this.enemy,
-            this.scene.walls
+            this.scene.ground
         );
     }
 
