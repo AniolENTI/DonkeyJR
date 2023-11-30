@@ -20,6 +20,8 @@ class nivell1 extends Phaser.Scene
         this.load.image('apple','spr_apple.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
+        this.load.spritesheet('mario','spr_mario.png',
+        {frameWidth:16,frameHeight:16});
 
 
         this.load.setPath('assets/tilesets');
@@ -64,17 +66,24 @@ class nivell1 extends Phaser.Scene
 
         this.enemy = new enemyPrefab(this,55,55,200,'blue');
         this.hero = new heroPrefab(this,18,200,'hero');
+
         this.donkey = this.physics.add.sprite(40, 48, 'donkey');
         this.donkey.body.setAllowGravity(false);
         this.donkey.body.setImmovable(true);
+
+        this.mario = this.physics.add.sprite(72, 56, 'mario');
+        this.mario.body.setAllowGravity(false);
+        this.mario.body.setImmovable(true);
 
         this.fruit = new fruitPrefab(this,65, 140,'apple');
 
         this.loadAnimations();
 
         this.donkey.anims.play('idle_dk');
+        this.mario.anims.play('idle_mario');
 
         this.physics.add.collider(this.donkey, this.hero);
+        this.physics.add.collider(this.mario, this.hero);
         this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
 
 
@@ -125,6 +134,13 @@ class nivell1 extends Phaser.Scene
                 key:'free_dk',
                 frames:this.anims.generateFrameNumbers('donkey', {start:4, end:5}),
                 frameRate: 5,
+                repeat: -1
+        });
+        this.anims.create(
+            {
+                key:'idle_mario',
+                frames:this.anims.generateFrameNumbers('mario', {start:0, end:1}),
+                frameRate: 2,
                 repeat: -1
         });
     }
