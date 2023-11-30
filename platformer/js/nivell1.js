@@ -74,6 +74,7 @@ class nivell1 extends Phaser.Scene
 
         this.donkey.anims.play('idle_dk');
 
+        this.physics.add.collider(this.donkey, this.hero);
         this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
 
 
