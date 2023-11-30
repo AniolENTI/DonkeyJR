@@ -18,6 +18,8 @@ class nivell1 extends Phaser.Scene
         this.load.spritesheet('blue','spr_enemy_blue.png',
         {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
+        this.load.spritesheet('donkey','spr_donkey_sr.png',
+        {frameWidth:48,frameHeight:32});
 
 
         this.load.setPath('assets/tilesets');
@@ -62,10 +64,15 @@ class nivell1 extends Phaser.Scene
 
         this.enemy = new enemyPrefab(this,55,55,200,'blue');
         this.hero = new heroPrefab(this,18,200,'hero');
+        this.donkey = this.physics.add.sprite(40, 48, 'donkey');
+        this.donkey.body.setAllowGravity(false);
+        this.donkey.body.setImmovable(true);
 
         this.fruit = new fruitPrefab(this,65, 140,'apple');
 
         this.loadAnimations();
+
+        this.donkey.anims.play('idle_dk');
 
         this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
 
@@ -86,8 +93,8 @@ class nivell1 extends Phaser.Scene
         this.anims.create(
         {
             key: 'run',
-            frames:this.anims.generateFrameNumbers('hero', {start:0, end: 3}),
-            frameRate: 10,
+            frames:this.anims.generateFrameNumbers('hero', {start:0, end: 2}),
+            frameRate: 7,
             repeat: -1
         });
 
@@ -103,6 +110,20 @@ class nivell1 extends Phaser.Scene
                 key: 'enemy_blue_h',
                 frames:this.anims.generateFrameNumbers('blue', {start:0, end: 1}),
                 frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+            {
+                key:'idle_dk',
+                frames:this.anims.generateFrameNumbers('donkey', {start:0, end:2}),
+                frameRate: 3,
+                repeat: -1
+        });
+        this.anims.create(
+            {
+                key:'free_dk',
+                frames:this.anims.generateFrameNumbers('donkey', {start:4, end:5}),
+                frameRate: 5,
                 repeat: -1
         });
     }
