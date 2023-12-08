@@ -63,21 +63,22 @@ class nivell1 extends Phaser.Scene
 
         this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
         this.scoreText.setFont('PressStart2P-Regular');
-
-        this.enemy = new enemyPrefab(this,55,55,200,'blue');
+        
         this.hero = new heroPrefab(this,18,200,'hero');
-
+        
         this.donkey = this.physics.add.sprite(40, 48, 'donkey');
         this.donkey.body.setAllowGravity(false);
         this.donkey.body.setImmovable(true);
-
+        
         this.mario = this.physics.add.sprite(72, 56, 'mario');
         this.mario.body.setAllowGravity(false);
         this.mario.body.setImmovable(true);
-
+        
         this.fruit = new fruitPrefab(this,65, 140,'apple');
-
+        
+        
         this.loadAnimations();
+        this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
         this.mario.anims.play('idle_mario');
@@ -115,6 +116,7 @@ class nivell1 extends Phaser.Scene
                 frameRate: 10,
                 repeat: -1
             });
+            
         this.anims.create(
         {
                 key: 'enemy_blue_h',
@@ -123,7 +125,14 @@ class nivell1 extends Phaser.Scene
                 repeat: -1
         });
         this.anims.create(
-            {
+        {
+                key: 'enemy_blue_v',
+                frames:this.anims.generateFrameNumbers('blue', {start:2, end: 3}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
                 key:'idle_dk',
                 frames:this.anims.generateFrameNumbers('donkey', {start:0, end:2}),
                 frameRate: 3,
