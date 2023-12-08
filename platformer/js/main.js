@@ -7,7 +7,7 @@ var gamePrefs=
     HERO_CLIMB: 100,
     HERO_GRAVITY:1000,
     ENEMY_SPEED: 45,
-    ENEMY_CLIMB_SPEED: 20,
+    ENEMY_CLIMB_SPEED: 35,
 }
 
 var config = 

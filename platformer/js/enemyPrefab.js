@@ -12,7 +12,7 @@ class enemyPrefab extends Phaser.GameObjects.Sprite {
         this.isClimbing = false;
         this.isAbovePlatform = false;
         this.climbDelay = 0;
-        this.climbDelayMax = 4;  // Adjust the value as needed
+        this.climbDelayMax = 1;  // Adjust the value as needed
         this.body.setVelocityX(gamePrefs.ENEMY_SPEED * this.direction);
         this.flipX = !this.flipX;
         this.setColliders();
@@ -24,14 +24,28 @@ class enemyPrefab extends Phaser.GameObjects.Sprite {
     }
 
     onGroundCollision(enemy, ground) {
-        /* Handle ground collision if needed */
+        this.deActivate();
     }
 
     howItPatrols() {
         return this.x < this.patrolStartX || this.x > this.patrolEndX || this.body.blocked.left;
     }
 
+    reset(_posX,_posY)
+    {
+        this.body.reset(_posX,_posY);
+        this.active = true;
+    }
+
+    deActivate()
+    {
+        this.setActive(false);
+        this.x=-200;
+    }
+
     startClimbing() {
+        if (!this.isClimbing) {
+            
         this.isClimbing = true;
         this.isAbovePlatform = false; // Reset the flag here
         // Disable the collider with platforms while climbing
@@ -41,18 +55,21 @@ class enemyPrefab extends Phaser.GameObjects.Sprite {
         this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
         this.anims.play('enemy_blue_h', false);
         this.anims.play('enemy_blue_v', true);
+        }
     }
 
     stopClimbing() {
-        console.log("a");
-        this.isClimbing = false;
-        // Re-enable the collider with platforms when climbing stops
-        this.platformCollider = this.scene.physics.add.collider(this.enemy, this.scene.platforms);
-        this.body.setAllowGravity(true);
-        this.body.setVelocity(0, 0);
+        if (this.isClimbing) {
+            this.isClimbing = false;
+            // Re-enable the collider with platforms when climbing stops
+            //this.platformCollider = this.scene.physics.add.collider(this.enemy, this.scene.platforms);
+            //this.body.setAllowGravity(true);
+            this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
+        }
     }
 
     preUpdate(time, delta) {
+        
         if (this.isClimbing) {
             const isAboveVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height);
             if (isAboveVine) {

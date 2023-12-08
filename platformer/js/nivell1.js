@@ -76,9 +76,9 @@ class nivell1 extends Phaser.Scene
         
         this.fruit = new fruitPrefab(this,65, 140,'apple');
         
-        
+        this.loadPools();
         this.loadAnimations();
-        this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
+        //this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
         this.mario.anims.play('idle_mario');
@@ -92,6 +92,17 @@ class nivell1 extends Phaser.Scene
 
         
         var vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
+
+        var rnd = Phaser.Math.Between(2,5);
+        this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay: rnd * 1000, //ms
+                callback: this.createBlueEnemy,
+                callbackScope:this,
+                loop:true //repeat: -1
+            }
+        );
     }
     /*
     loadSounds()
@@ -152,6 +163,30 @@ class nivell1 extends Phaser.Scene
                 frameRate: 2,
                 repeat: -1
         });
+    }
+
+    loadPools()
+    {
+        this.blueEnemyPool = this.physics.add.group();
+    }
+
+    createBlueEnemy()
+    {
+        //Mirar si hay algun enemigo reciclable en la pool
+        var _enemy = this.blueEnemyPool.getFirst(false);
+        
+        var posX = 100;
+        var posY = 56;
+
+        if(!_enemy)
+        {
+            
+            _enemy = new enemyPrefab(this,posX,posY,100,200,'blue');            
+            //this.blueEnemyPool.add(_enemy);
+        }else
+        {
+            _enemy.reset(posX,posY);
+        }        
     }
 
     addScore(hero,fruit)
