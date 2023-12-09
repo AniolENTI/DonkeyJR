@@ -3,7 +3,7 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
         super(_scene, _posX, _posY, _spriteTag);
         _scene.add.existing(this);
         _scene.physics.world.enable(this);
-        this.anims.play('enemy_red_h', true);  // Adjust animation name as needed
+        this.anims.play('enemy_red_h', true);  
         this.scene = _scene;
         this.enemy = this;
         this.direction = 1;
@@ -11,7 +11,7 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.patrolEndX = _patrolEndX;
         this.isClimbing = false;
         this.climbDelay = 0;
-        this.climbDelayMax = 1;  // Adjust the value as needed
+        this.climbDelayMax = 1;  
         this.body.setVelocityX(gamePrefs.ENEMY_SPEED * this.direction);
         this.flipX = !this.flipX;
         this.setColliders();
@@ -56,8 +56,8 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
             this.isClimbing = true;
             this.scene.physics.world.removeCollider(this.platformCollider);
             this.body.setAllowGravity(false);
-            this.anims.play('enemy_red_h', false);  // Adjust animation name as needed
-            this.anims.play('enemy_red_v', true);  // Adjust animation name as needed
+            this.anims.play('enemy_red_h', false);  
+            this.anims.play('enemy_red_v', true);  
         }
     }
 
@@ -82,12 +82,10 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
                 const climbDirection = isAboveVine ? -1 : 1;
                 this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
     
-                // Check if the enemy is at the end or top part of the vine
                 const atEndOfVine = isBelowVine && vineTile.index === yourVineTileEndIndex;
                 const atTopOfVine = isAboveVine && vineTile.index === yourVineTileTopIndex;
     
                 if (atEndOfVine || atTopOfVine) {
-                    // Flip the y-direction
                     this.body.setVelocity(0, -gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
                 }
             } else {
@@ -108,9 +106,9 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
                 if (isAboveVine && Phaser.Math.Between(0, 100) < 5) {
                     this.startClimbing();
                 } else if (isBelowVine && Phaser.Math.Between(0, 100) < 5) {
-                    this.startClimbing(true); // Climb down
+                    this.startClimbing(true); 
                 } else if (isAbovePlatform && !this.isAbovePlatform) {
-                    this.isAbovePlatform = true;  // Set the flag when the enemy is above the platform
+                    this.isAbovePlatform = true;  
                 }
     
                 this.climbDelay = this.climbDelayMax;

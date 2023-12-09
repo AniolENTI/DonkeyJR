@@ -201,7 +201,7 @@ class nivell1 extends Phaser.Scene
     }
     createBlueEnemy()
     {
-        //Mirar si hay algun enemigo reciclable en la pool
+        
         var _enemy = this.blueEnemyPool.getFirst(false);
         
         var posX = 100;
@@ -219,7 +219,7 @@ class nivell1 extends Phaser.Scene
     }
     createRedEnemy()
     {
-        //Mirar si hay algun enemigo reciclable en la pool
+        
         var _enemy = this.redEnemyPool.getFirst(false);
         
         var posX = 100;
