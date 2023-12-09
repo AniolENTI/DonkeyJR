@@ -17,6 +17,8 @@ class nivell1 extends Phaser.Scene
         {frameWidth:32,frameHeight:16});
         this.load.spritesheet('blue','spr_enemy_blue.png',
         {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('red','spr_enemy_red.png',
+        {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
@@ -93,12 +95,12 @@ class nivell1 extends Phaser.Scene
         
         var vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
 
-        var rnd = Phaser.Math.Between(2,5);
+        var rnd = Phaser.Math.Between(4,8);
         this.enemyTimer = this.time.addEvent
         (
             {
                 delay: rnd * 1000, //ms
-                callback: this.createBlueEnemy,
+                callback: this.spawnEnemy,
                 callbackScope:this,
                 loop:true //repeat: -1
             }
@@ -144,6 +146,20 @@ class nivell1 extends Phaser.Scene
         });
         this.anims.create(
         {
+                key: 'enemy_red_h',
+                frames:this.anims.generateFrameNumbers('red', {start:0, end: 1}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
+                key: 'enemy_red_v',
+                frames:this.anims.generateFrameNumbers('red', {start:2, end: 3}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
                 key:'idle_dk',
                 frames:this.anims.generateFrameNumbers('donkey', {start:0, end:2}),
                 frameRate: 3,
@@ -168,8 +184,21 @@ class nivell1 extends Phaser.Scene
     loadPools()
     {
         this.blueEnemyPool = this.physics.add.group();
+        this.redEnemyPool = this.physics.add.group();
+
     }
 
+    spawnEnemy()
+    {
+        var rnd = Phaser.Math.Between(0,5);
+        if(rnd < 2)
+        {
+            this.createBlueEnemy();
+        }
+        else{
+            this.createRedEnemy();
+        }
+    }
     createBlueEnemy()
     {
         //Mirar si hay algun enemigo reciclable en la pool
@@ -181,8 +210,26 @@ class nivell1 extends Phaser.Scene
         if(!_enemy)
         {
             
-            _enemy = new enemyPrefab(this,posX,posY,100,200,'blue');            
+            _enemy = new blueEnemyPrefab(this,posX,posY,100,200,'blue');            
             //this.blueEnemyPool.add(_enemy);
+        }else
+        {
+            _enemy.reset(posX,posY);
+        }        
+    }
+    createRedEnemy()
+    {
+        //Mirar si hay algun enemigo reciclable en la pool
+        var _enemy = this.redEnemyPool.getFirst(false);
+        
+        var posX = 100;
+        var posY = 56;
+
+        if(!_enemy)
+        {
+            
+            _enemy = new redEnemyPrefab(this,posX,posY,100,200,'red');            
+            //this.redEnemyPool.add(_enemy);
         }else
         {
             _enemy.reset(posX,posY);

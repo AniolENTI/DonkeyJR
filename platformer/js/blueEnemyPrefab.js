@@ -1,4 +1,4 @@
-class enemyPrefab extends Phaser.GameObjects.Sprite {
+class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
     constructor(_scene, _posX, _posY, _patrolStartX, _patrolEndX, _spriteTag) {
         super(_scene, _posX, _posY, _spriteTag);
         _scene.add.existing(this);
@@ -19,11 +19,23 @@ class enemyPrefab extends Phaser.GameObjects.Sprite {
     }
 
     setColliders() {
-        this.scene.physics.world.addCollider(this.enemy, this.scene.ground, this.onGroundCollision, null, this);
-        this.platformCollider = this.scene.physics.world.addCollider(this.enemy, this.scene.platforms);
+        this.scene.physics.world.addCollider
+        (
+            this.enemy, 
+            this.scene.ground, 
+            this.onGroundCollision,
+            null,
+            this
+        );
+        this.platformCollider = this.scene.physics.world.addCollider
+        (
+            this.enemy, 
+            this.scene.platforms
+        );
     }
 
-    onGroundCollision(enemy, ground) {
+    onGroundCollision(enemy, ground) 
+    {
         this.deActivate();
     }
 
