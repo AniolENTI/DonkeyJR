@@ -17,6 +17,8 @@ class nivell1 extends Phaser.Scene
         {frameWidth:32,frameHeight:16});
         this.load.spritesheet('blue','spr_enemy_blue.png',
         {frameWidth:16,frameHeight:16});
+        this.load.spritesheet('red','spr_enemy_red.png',
+        {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
@@ -63,21 +65,22 @@ class nivell1 extends Phaser.Scene
 
         this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
         this.scoreText.setFont('PressStart2P-Regular');
-
-        this.enemy = new enemyPrefab(this,55,55,200,'blue');
+        
         this.hero = new heroPrefab(this,18,200,'hero');
-
+        
         this.donkey = this.physics.add.sprite(40, 48, 'donkey');
         this.donkey.body.setAllowGravity(false);
         this.donkey.body.setImmovable(true);
-
+        
         this.mario = this.physics.add.sprite(72, 56, 'mario');
         this.mario.body.setAllowGravity(false);
         this.mario.body.setImmovable(true);
-
+        
         this.fruit = new fruitPrefab(this,65, 140,'apple');
-
+        
+        this.loadPools();
         this.loadAnimations();
+        //this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
         this.mario.anims.play('idle_mario');
@@ -91,6 +94,17 @@ class nivell1 extends Phaser.Scene
 
         
         var vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
+
+        var rnd = Phaser.Math.Between(4,8);
+        this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay: rnd * 1000, //ms
+                callback: this.spawnEnemy,
+                callbackScope:this,
+                loop:true //repeat: -1
+            }
+        );
     }
     /*
     loadSounds()
@@ -115,6 +129,7 @@ class nivell1 extends Phaser.Scene
                 frameRate: 10,
                 repeat: -1
             });
+            
         this.anims.create(
         {
                 key: 'enemy_blue_h',
@@ -123,7 +138,28 @@ class nivell1 extends Phaser.Scene
                 repeat: -1
         });
         this.anims.create(
-            {
+        {
+                key: 'enemy_blue_v',
+                frames:this.anims.generateFrameNumbers('blue', {start:2, end: 3}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
+                key: 'enemy_red_h',
+                frames:this.anims.generateFrameNumbers('red', {start:0, end: 1}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
+                key: 'enemy_red_v',
+                frames:this.anims.generateFrameNumbers('red', {start:2, end: 3}),
+                frameRate: 10,
+                repeat: -1
+        });
+        this.anims.create(
+        {
                 key:'idle_dk',
                 frames:this.anims.generateFrameNumbers('donkey', {start:0, end:2}),
                 frameRate: 3,
@@ -143,6 +179,61 @@ class nivell1 extends Phaser.Scene
                 frameRate: 2,
                 repeat: -1
         });
+    }
+
+    loadPools()
+    {
+        this.blueEnemyPool = this.physics.add.group();
+        this.redEnemyPool = this.physics.add.group();
+
+    }
+
+    spawnEnemy()
+    {
+        var rnd = Phaser.Math.Between(0,5);
+        if(rnd < 2)
+        {
+            this.createBlueEnemy();
+        }
+        else{
+            this.createRedEnemy();
+        }
+    }
+    createBlueEnemy()
+    {
+        
+        var _enemy = this.blueEnemyPool.getFirst(false);
+        
+        var posX = 100;
+        var posY = 56;
+
+        if(!_enemy)
+        {
+            
+            _enemy = new blueEnemyPrefab(this,posX,posY,100,200,'blue');            
+            //this.blueEnemyPool.add(_enemy);
+        }else
+        {
+            _enemy.reset(posX,posY);
+        }        
+    }
+    createRedEnemy()
+    {
+        
+        var _enemy = this.redEnemyPool.getFirst(false);
+        
+        var posX = 100;
+        var posY = 56;
+
+        if(!_enemy)
+        {
+            
+            _enemy = new redEnemyPrefab(this,posX,posY,100,200,'red');            
+            //this.redEnemyPool.add(_enemy);
+        }else
+        {
+            _enemy.reset(posX,posY);
+        }        
     }
 
     addScore(hero,fruit)
