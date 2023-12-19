@@ -20,6 +20,7 @@ class nivell1 extends Phaser.Scene
         this.load.spritesheet('red','spr_enemy_red.png',
         {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
+        this.load.image('key','spr_key.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
         this.load.spritesheet('mario','spr_mario.png',
@@ -77,6 +78,7 @@ class nivell1 extends Phaser.Scene
         this.mario.body.setImmovable(true);
         
         this.fruit = new fruitPrefab(this,65, 140,'apple');
+        this.key = this.add.image(120, 40, 'key').setDepth(-1);
         
         this.loadPools();
         this.loadAnimations();
@@ -246,7 +248,12 @@ class nivell1 extends Phaser.Scene
 
     die()
     {
+        this.cameras.main.fade(500, 0, 0, 0);
+
+    this.cameras.main.on('camerafadeoutcomplete', function (camera) {
+        this.score = 0;
         this.scene.restart();
+    }, this);
     }
     
     update()
