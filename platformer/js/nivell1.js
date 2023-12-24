@@ -93,6 +93,8 @@ class nivell1 extends Phaser.Scene
 
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.climbing = new Boolean;
+        this.climbing = false;
 
         
         var vineTile = this.vines.getTileAtWorldXY(this.hero.x, this.hero.y);
@@ -267,10 +269,29 @@ class nivell1 extends Phaser.Scene
         if(this.vineTile && this.vineTile.index > 0)
         {
             this.hero.climb();
+
+            if(this.cursors.up.isDown)
+            {
+                this.hero.body.setAllowGravity(false);
+                this.hero.body.setVelocityY(0);
+                this.climbing = true;
+            }
+            
+            if(this.climbing)
+            {
+                this.hero.setFrame(5);
+            }
+            
         }
         else
         {
             this.hero.unClimb();
+            this.hero.body.setAllowGravity(true);
+        }
+
+        if(this.hero.body.onFloor())
+        {
+            this.climbing = false;
         }
     }
 }
