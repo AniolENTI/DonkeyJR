@@ -2,10 +2,10 @@ var gamePrefs=
 {
     gameWidth:256,
     gameHeight:240,
-    HERO_SPEED:100,
-    HERO_JUMP:350,
-    HERO_CLIMB: 100,
-    HERO_GRAVITY:1000,
+    HERO_SPEED:50,
+    HERO_JUMP:150,
+    HERO_CLIMB: 50,
+    HERO_GRAVITY:400,
     ENEMY_SPEED: 45,
     ENEMY_CLIMB_SPEED: 35,
 }
