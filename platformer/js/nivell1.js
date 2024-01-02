@@ -34,6 +34,10 @@ class nivell1 extends Phaser.Scene
         this.load.image('tileset_water','tileset_water.png');
         
         this.load.setPath('assets/sounds');
+        this.load.audio('bgm','bgm_lvl1.mp3');
+        this.load.audio('deathSound', 'sfx_death.wav');
+        this.load.audio('jumpSound','sfx_jump.wav');
+        this.load.audio('climbSound','sfx_climb.wav');
         
         this.load.setPath('assets/maps');
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
@@ -82,6 +86,7 @@ class nivell1 extends Phaser.Scene
         
         this.loadPools();
         this.loadAnimations();
+        this.loadSounds();
         //this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
@@ -109,13 +114,20 @@ class nivell1 extends Phaser.Scene
                 loop:true //repeat: -1
             }
         );
-    }
-    /*
-    loadSounds()
-    {
+
         
     }
-    */
+    
+    loadSounds()
+    {
+        this.bgm = this.sound.add('bgm');
+        this.jumpSound = this.sound.add('jumpSound');
+        this.deathSound = this.sound.add('deathSound');
+        this.climbSound = this.sound.add('climbSound');
+
+        this.bgm.play();
+    }
+    
     loadAnimations()
     {        
         this.anims.create(
@@ -250,6 +262,7 @@ class nivell1 extends Phaser.Scene
 
     die()
     {
+        this.deathSound.play();
         this.cameras.main.fade(500, 0, 0, 0);
 
     this.cameras.main.on('camerafadeoutcomplete', function (camera) {
