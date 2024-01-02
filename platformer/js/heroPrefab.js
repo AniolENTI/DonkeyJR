@@ -60,7 +60,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
           && !this.isClimbing)
         {
             this.hero.body.setVelocityY(-gamePrefs.HERO_JUMP);
-            this.scene.jump.play();
+            this.scene.jumpSound.play();
         }
 
         if(!this.hero.body.onFloor()
@@ -76,6 +76,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         {
             this.hero.body.setVelocityY(-gamePrefs.HERO_CLIMB)
             this.hero.anims.play('climb', true);
+            this.scene.climbSound.play();
         }
 
         if(this.cursors.down.isDown
@@ -83,6 +84,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         {
             this.hero.body.setVelocityY(gamePrefs.HERO_CLIMB)
             this.hero.anims.play('climb', true);
+            this.scene.climbSound.play();
         }
     }
 

@@ -37,6 +37,7 @@ class nivell1 extends Phaser.Scene
         this.load.audio('bgm','bgm_lvl1.mp3');
         this.load.audio('deathSound', 'sfx_death.wav');
         this.load.audio('jumpSound','sfx_jump.wav');
+        this.load.audio('climbSound','sfx_climb.wav');
         
         this.load.setPath('assets/maps');
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
@@ -120,8 +121,9 @@ class nivell1 extends Phaser.Scene
     loadSounds()
     {
         this.bgm = this.sound.add('bgm');
-        this.jump = this.sound.add('jumpSound');
-        this.death = this.sound.add('deathSound');
+        this.jumpSound = this.sound.add('jumpSound');
+        this.deathSound = this.sound.add('deathSound');
+        this.climbSound = this.sound.add('climbSound');
 
         this.bgm.play();
     }
@@ -260,7 +262,7 @@ class nivell1 extends Phaser.Scene
 
     die()
     {
-        this.death.play();
+        this.deathSound.play();
         this.cameras.main.fade(500, 0, 0, 0);
 
     this.cameras.main.on('camerafadeoutcomplete', function (camera) {
