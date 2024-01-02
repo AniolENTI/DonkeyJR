@@ -34,7 +34,7 @@ class nivell1 extends Phaser.Scene
         this.load.image('tileset_water','tileset_water.png');
         
         this.load.setPath('assets/sounds');
-        this.load.audio('music','bgm_lvl1.mp3');
+        this.load.audio('bgm','bgm_lvl1.mp3');
         this.load.audio('deathSound', 'sfx_death.wav');
         this.load.audio('jumpSound','sfx_jump.wav');
         
@@ -119,11 +119,11 @@ class nivell1 extends Phaser.Scene
     
     loadSounds()
     {
-        //this.bgm = this.music.add('music');
+        this.bgm = this.sound.add('bgm');
         this.jump = this.sound.add('jumpSound');
         this.death = this.sound.add('deathSound');
 
-        //this.bgm.play();
+        this.bgm.play();
     }
     
     loadAnimations()
