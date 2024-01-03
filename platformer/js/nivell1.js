@@ -82,7 +82,10 @@ class nivell1 extends Phaser.Scene
         this.mario.body.setImmovable(true);
         
         this.fruit = new fruitPrefab(this,65, 140,'apple');
-        this.key = this.add.image(120, 40, 'key').setDepth(-1);
+
+        this.key = this.physics.add.sprite(120, 40, 'key').setOffset(-48, 0).setDepth(-1);
+        this.key.body.setAllowGravity(false);
+        this.key.body.setImmovable(true);
         
         this.loadPools();
         this.loadAnimations();
@@ -95,6 +98,7 @@ class nivell1 extends Phaser.Scene
         this.physics.add.collider(this.donkey, this.hero);
         this.physics.add.collider(this.mario, this.hero);
         this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
+        this.physics.add.collider(this.hero, this.key, this.endGame, null, this);
 
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -269,6 +273,32 @@ class nivell1 extends Phaser.Scene
         this.score = 0;
         this.scene.restart();
     }, this);
+    }
+
+    endGame()
+    {
+        
+        this.add.tween(
+            {
+                targets:this.donkey,
+                duration: 1000,
+                x: this.donkey.x-125,
+                onComplete: this.changeScene()
+            }
+        );
+        this.mario.flipX = true;
+        this.add.tween(
+            {
+                targets:this.mario,
+                duration: 1000,
+                x: this.mario.x-125
+            }
+        );
+    }
+
+    changeScene()
+    {
+        this.die();
     }
     
     update()
