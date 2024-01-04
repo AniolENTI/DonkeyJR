@@ -32,6 +32,13 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
             this.enemy, 
             this.scene.platforms
         );
+        /*
+        this.scene.physics.add.overlap
+        (
+            this.scene.hero,
+            this.enemy,
+            this.scene.die
+        );   */    
     }
 
     onGroundCollision(enemy, ground) 
@@ -71,9 +78,7 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
 
     stopClimbing() {
         if (this.isClimbing) {
-            this.isClimbing = false;            
-            //this.platformCollider = this.scene.physics.add.collider(this.enemy, this.scene.platforms);
-            //this.body.setAllowGravity(true);
+            this.isClimbing = false;
             this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
         }
     }

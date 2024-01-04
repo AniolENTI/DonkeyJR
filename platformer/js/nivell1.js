@@ -20,6 +20,8 @@ class nivell1 extends Phaser.Scene
         this.load.spritesheet('red','spr_enemy_red.png',
         {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
+        this.load.image('banana','spr_banana.png');
+        this.load.image('mango','spr_mango.png');
         this.load.image('key','spr_key.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
@@ -43,8 +45,9 @@ class nivell1 extends Phaser.Scene
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
 
         this.load.setPath('assets/fonts');
-
+        this.load.bitmapFont('titleFont','titleFont.png','titleFont.xml'); 
         this.scoreText;
+        this.currentRedEnemy = 0;
     }
 
     create()
@@ -68,8 +71,7 @@ class nivell1 extends Phaser.Scene
         this.map.setCollisionByExclusion(-1,true,true,'layer_platforms'); 
         this.map.setCollisionByExclusion(-1,true,true,'layer_ground');
 
-        this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
-        this.scoreText.setFont('PressStart2P-Regular');
+        this.scoreText = this.add.bitmapText(gamePrefs.gameWidth - 75,16,'titleFont','SCORE: 0',8);
         
         this.hero = new heroPrefab(this,18,200,'hero');
         
@@ -81,7 +83,7 @@ class nivell1 extends Phaser.Scene
         this.mario.body.setAllowGravity(false);
         this.mario.body.setImmovable(true);
         
-        this.fruit = new fruitPrefab(this,65, 140,'apple');
+        
 
         this.key = this.physics.add.sprite(120, 40, 'key').setOffset(-48, 0).setDepth(-1);
         this.key.body.setAllowGravity(false);
@@ -90,14 +92,12 @@ class nivell1 extends Phaser.Scene
         this.loadPools();
         this.loadAnimations();
         this.loadSounds();
-        //this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
         this.mario.anims.play('idle_mario');
 
         this.physics.add.collider(this.donkey, this.hero);
         this.physics.add.collider(this.mario, this.hero);
-        this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
         this.physics.add.collider(this.hero, this.key, this.endGame, null, this);
 
 
@@ -119,6 +119,16 @@ class nivell1 extends Phaser.Scene
             }
         );
 
+        this.level_fruits = this.map.getObjectLayer('layer_fruits');
+        this.level_fruits.objects.forEach(function (element)
+        {        
+            this.fruit = new fruitPrefab(this,
+                {
+                 posX:element.x,
+                 posY:element.y,
+                 spriteTag:element.type
+                });     
+        },this);
         
     }
     
@@ -210,13 +220,15 @@ class nivell1 extends Phaser.Scene
 
     spawnEnemy()
     {
-        var rnd = Phaser.Math.Between(0,5);
-        if(rnd < 2)
+        var rnd = Phaser.Math.Between(0,5);        
+        if(rnd > 2 && currentRedEnemy < gamePrefs.MAX_RED_ENEMY){
+            console.log(currentRedEnemy);
+            this.createRedEnemy();
+            currentRedEnemy += 1;
+        }
+        else
         {
             this.createBlueEnemy();
-        }
-        else{
-            this.createRedEnemy();
         }
     }
     createBlueEnemy()
@@ -256,12 +268,11 @@ class nivell1 extends Phaser.Scene
         }        
     }
 
-    addScore(hero,fruit)
-    {
-        fruit.disableBody();
+    addScore()
+    {        
 
-        this.score += 100;
-        this.scoreText.setText(`Score: ${this.score}`);
+        this.score += 400;
+        this.scoreText.setText(`Score:${this.score}`);
     }
 
     die()

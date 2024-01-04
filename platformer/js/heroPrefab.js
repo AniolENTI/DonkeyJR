@@ -30,6 +30,11 @@ class heroPrefab extends Phaser.GameObjects.Sprite
             this.hero,
             this.scene.ground
         );
+        this.scene.physics.add.collider
+        (
+            this.hero,
+            this.scene.ground
+        );        
     }
     
 
