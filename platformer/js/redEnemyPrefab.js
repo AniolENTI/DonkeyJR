@@ -17,7 +17,8 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.setColliders();
     }
 
-    setColliders() {
+    setColliders() 
+    {
         this.scene.physics.world.addCollider
         (
             this.enemy, 
@@ -31,28 +32,35 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
             this.enemy, 
             this.scene.platforms
         );        
-      /*  this.scene.physics.add.overlap(
+        this.scene.physics.add.overlap(
             this.scene.hero,
             this.enemy,
-            this.onHeroCollision,
+            this.onHeroCollision.bind(this), 
             null,
-            this.scene
-        );*/
-    }
+            this
+        );
+    }    
 
-    onHeroCollision(hero, enemy) {
-        this.scene.die();
-    }
-
-    onGroundCollision(enemy, ground) {
+    onGroundCollision(enemy, ground) 
+    {
         this.deActivate();
     }
 
-    howItPatrols() {
+    onHeroCollision(hero, enemy) 
+    {
+        if (this.scene && this.scene.die) 
+        {
+            this.scene.die();
+        }
+    }
+
+    howItPatrols() 
+    {
         return this.x < this.patrolStartX || this.x > this.patrolEndX || this.body.blocked.left;
     }
 
-    reset(_posX, _posY) {
+    reset(_posX, _posY) 
+    {
         this.body.reset(_posX, _posY);
         this.active = true;
     }
@@ -63,7 +71,8 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
     }
 
     startClimbing() {
-        if (!this.isClimbing) {
+        if (!this.isClimbing) 
+        {
             this.isClimbing = true;
             this.scene.physics.world.removeCollider(this.platformCollider);
             this.body.setAllowGravity(false);
@@ -73,18 +82,22 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
     }
 
     stopClimbing() {
-        if (this.isClimbing) {
+        if (this.isClimbing) 
+        {
             this.isClimbing = false;
             this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
         }
     }
 
-    preUpdate(time, delta) {
-        if (this.isClimbing) {
+    preUpdate(time, delta) 
+    {
+
+        if (this.isClimbing) 
+        {
             const isAboveVine = this.scene.vines.getTileAtWorldXY(this.x, this.y - 1);
-            const isBelowVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height + 1);
-    
-            if (isAboveVine || isBelowVine) {
+            const isBelowVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height + 1);    
+            if (isAboveVine || isBelowVine) 
+            {
                 const vineTile = isAboveVine || isBelowVine;  
     
                 const vineWorldPos = this.scene.vines.tileToWorldXY(vineTile.x, vineTile.y);
@@ -93,34 +106,43 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
                 const climbDirection = isAboveVine ? -1 : 1;
                 this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
     
-                if (isBelowVine) {
+                if (isBelowVine) 
+                {
                     this.body.setVelocity(0, -gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
                 }
-            } else {
+            } else 
+            {
                 this.stopClimbing();
             }
-        } else {
+        } else 
+        {
             const isAboveVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height);
             const isBelowVine = this.scene.vines.getTileAtWorldXY(this.x, this.y - 1);
             const isAbovePlatform = this.scene.platforms.getTileAtWorldXY(this.x, this.y + this.height);
     
-            if (this.howItPatrols()) {
+            if (this.howItPatrols()) 
+            {
                 this.direction *= -1;
                 this.body.setVelocityX(gamePrefs.ENEMY_SPEED * this.direction);
                 this.flipX = !this.flipX;
             }
     
-            if (this.climbDelay <= 0) {
-                if (isAboveVine && Phaser.Math.Between(0, 100) < 5) {
+            if (this.climbDelay <= 0) 
+            {
+                if (isAboveVine && Phaser.Math.Between(0, 100) < 5) 
+                {
                     this.startClimbing();
-                } else if (isBelowVine && Phaser.Math.Between(0, 100) < 5) {
+                } else if (isBelowVine && Phaser.Math.Between(0, 100) < 5) 
+                {
                     this.startClimbing(true); 
-                } else if (isAbovePlatform && !this.isAbovePlatform) {
+                } else if (isAbovePlatform && !this.isAbovePlatform) 
+                {
                     this.isAbovePlatform = true;  
                 }
     
                 this.climbDelay = this.climbDelayMax;
-            } else {
+            } else 
+            {
                 this.climbDelay -= 1;
             }
         }
