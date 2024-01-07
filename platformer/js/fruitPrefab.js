@@ -25,10 +25,18 @@ class fruitPrefab extends Phaser.GameObjects.Sprite
 
     disableBody()
     {
-        this.scene.addScore();
+        //this.scene.addScore();
        /* this.active = false;
         this.x = -100;*/
-        this.fruit.destroy();
+        this.add.tween(
+            {
+                targets:this.fruit,
+                duration: 1000,
+                x: this.donkey.x-125,
+                onComplete: this.addScore()
+            }
+        );
+        //this.fruit.destroy();
     }
     preUpdate(time,delta)
     {

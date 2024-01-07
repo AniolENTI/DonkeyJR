@@ -40,6 +40,8 @@ class nivell1 extends Phaser.Scene
         this.load.audio('deathSound', 'sfx_death.wav');
         this.load.audio('jumpSound','sfx_jump.wav');
         this.load.audio('climbSound','sfx_climb.wav');
+        this.load.audio('fruitSound','sfx_fruit.wav');
+
         
         this.load.setPath('assets/maps');
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
@@ -137,6 +139,7 @@ class nivell1 extends Phaser.Scene
         this.jumpSound = this.sound.add('jumpSound');
         this.deathSound = this.sound.add('deathSound');
         this.climbSound = this.sound.add('climbSound');
+        this.fruitSound = this.sound.add('fruitSound');
 
         this.bgm.play();
     }
@@ -227,24 +230,21 @@ class nivell1 extends Phaser.Scene
             this.createRedEnemy();
         }
     }
-    createBlueEnemy()
-    {
-        
+    createBlueEnemy() {
         var _enemy = this.blueEnemyPool.getFirst(false);
-        
+    
         var posX = 100;
         var posY = 56;
-
-        if(!_enemy)
-        {
-            
-            _enemy = new blueEnemyPrefab(this,posX,posY,100,200,'blue');            
+    
+        if (!_enemy) {
+            _enemy = new blueEnemyPrefab(this, posX, posY, 100, 200, 'blue');
             //this.blueEnemyPool.add(_enemy);
-        }else
-        {
-            _enemy.reset(posX,posY);
-        }        
+        } else {
+            _enemy.reset(posX, posY);
+        }
     }
+    
+
     createRedEnemy()
     {
         
@@ -265,8 +265,8 @@ class nivell1 extends Phaser.Scene
     }
 
     addScore()
-    {        
-
+    {  
+        this.fruitSound.play();
         this.score += 400;
         this.scoreText.setText(`Score:${this.score}`);
     }
@@ -275,7 +275,7 @@ class nivell1 extends Phaser.Scene
     {
         this.deathSound.play();
         this.cameras.main.fade(500, 0, 0, 0);
-
+        this.bgm.stop();
     this.cameras.main.on('camerafadeoutcomplete', function (camera) {
         this.score = 0;
         this.scene.restart();
