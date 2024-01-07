@@ -2,6 +2,7 @@ class nivell1 extends Phaser.Scene
 {
     
     score = 0;
+    
 
     constructor()
     {
@@ -130,7 +131,6 @@ class nivell1 extends Phaser.Scene
                  spriteTag:element.type
                 });     
         },this);
-        
     }
     
     loadSounds()
@@ -269,7 +269,7 @@ class nivell1 extends Phaser.Scene
     {  
         this.fruitSound.play();
         this.score += 400;
-        this.scoreText.setText(`Score:${this.score}`);
+        this.scoreText.setText(`SCORE:${this.score}`);
     }
 
     die()
@@ -306,7 +306,8 @@ class nivell1 extends Phaser.Scene
 
     changeScene()
     {
-        this.die();
+        this.bgm.stop();
+        this.scene.start('scoreScreen', {score: this.score});
     }
     
     update()
