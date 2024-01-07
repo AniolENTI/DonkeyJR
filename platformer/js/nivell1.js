@@ -41,7 +41,7 @@ class nivell1 extends Phaser.Scene
         this.load.audio('jumpSound','sfx_jump.wav');
         this.load.audio('climbSound','sfx_climb.wav');
         this.load.audio('fruitSound','sfx_fruit.wav');
-
+        this.load.audio('victorySound','sfx_victory.wav');
         
         this.load.setPath('assets/maps');
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
@@ -140,6 +140,7 @@ class nivell1 extends Phaser.Scene
         this.deathSound = this.sound.add('deathSound');
         this.climbSound = this.sound.add('climbSound');
         this.fruitSound = this.sound.add('fruitSound');
+        this.victorySound = this.sound.add('victorySound');
 
         this.bgm.play();
     }
@@ -284,7 +285,7 @@ class nivell1 extends Phaser.Scene
 
     endGame()
     {
-        
+        this.victorySound.play();
         this.add.tween(
             {
                 targets:this.donkey,

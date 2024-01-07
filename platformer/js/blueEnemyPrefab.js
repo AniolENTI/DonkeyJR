@@ -18,7 +18,8 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.setColliders();
     }
 
-    setColliders() {
+    setColliders() 
+    {
         this.scene.physics.world.addCollider
         (
             this.enemy, 
@@ -32,13 +33,13 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
             this.enemy, 
             this.scene.platforms
         );
-       /* this.scene.physics.add.overlap(
+        this.scene.physics.add.overlap(
             this.scene.hero,
             this.enemy,
-            this.onHeroCollision,
+            this.onHeroCollision.bind(this), 
             null,
-            this.scene
-        );   */
+            this
+        );
     }
 
     onGroundCollision(enemy, ground) 
@@ -46,11 +47,15 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.deActivate();
     }
 
-    onHeroCollision(hero, enemy) {
-        this.scene.die();
+    onHeroCollision(hero, enemy) 
+    {
+        if (this.scene && this.scene.die) {
+            this.scene.die();
+        }
     }
 
-    howItPatrols() {
+    howItPatrols() 
+    {
         return this.x < this.patrolStartX || this.x > this.patrolEndX || this.body.blocked.left;
     }
 
@@ -66,61 +71,75 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.x=-200;
     }
 
-    startClimbing() {
-        if (!this.isClimbing) {
-            
-        this.isClimbing = true;
-        this.isAbovePlatform = false;         
-        this.scene.physics.world.removeCollider(this.platformCollider);
-        this.setPosition(this.x, this.y + 20); 
-        this.body.setAllowGravity(false);
-        this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
-        this.anims.play('enemy_blue_h', false);
-        this.anims.play('enemy_blue_v', true);
+    startClimbing() 
+    {
+        if (!this.isClimbing) 
+        {
+            this.isClimbing = true;
+            this.isAbovePlatform = false;         
+            this.scene.physics.world.removeCollider(this.platformCollider);
+            this.setPosition(this.x, this.y + 20); 
+            this.body.setAllowGravity(false);
+            this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
+            this.anims.play('enemy_blue_h', false);
+            this.anims.play('enemy_blue_v', true);
         }
     }
 
-    stopClimbing() {
-        if (this.isClimbing) {
+    stopClimbing() 
+    {
+        if (this.isClimbing) 
+        {
             this.isClimbing = false;
             this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
         }
     }
 
-    preUpdate(time, delta) {
+    preUpdate(time, delta) 
+    {
         
-        if (this.isClimbing) {
+        if (this.isClimbing) 
+        {
             const isAboveVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height);
-            if (isAboveVine) {
+
+            if (isAboveVine) 
+            {
                 const vineTile = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height);
-                if (vineTile) {
+
+                if (vineTile) 
+                {
                     const vineWorldPos = this.scene.vines.tileToWorldXY(vineTile.x, vineTile.y);
                     this.x = vineWorldPos.x + this.width / 2;
                 }
-            } else {
+            } else 
+            {
                 this.stopClimbing();
             }
         } else {
             const isAboveVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height);
             const isAbovePlatform = this.scene.platforms.getTileAtWorldXY(this.x, this.y + this.height);
     
-            if (this.howItPatrols()) {
+            if (this.howItPatrols()) 
+            {
                 this.direction *= -1;
                 this.body.setVelocityX(gamePrefs.ENEMY_SPEED * this.direction);
                 this.flipX = !this.flipX;
             }
     
             if (this.climbDelay <= 0) {
-                if (isAboveVine && Phaser.Math.Between(0, 100) < 5) {
+                if (isAboveVine && Phaser.Math.Between(0, 100) < 5) 
+                {
                     this.startClimbing();
-                } else if (isAbovePlatform && this.isAbovePlatform) {
+                } else if (isAbovePlatform && this.isAbovePlatform) 
+                {
                     
                     this.isAbovePlatform = false;
                     this.body.setVelocityY(gamePrefs.ENEMY_CLIMB_SPEED);
                 }   
                 
                 this.climbDelay = this.climbDelayMax;
-            } else {                
+            } else 
+            {                
                 this.climbDelay -= 1;
             }
         }
