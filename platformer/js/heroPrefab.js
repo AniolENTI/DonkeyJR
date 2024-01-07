@@ -12,7 +12,7 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.isClimbing = false;
         this.hero.body.setSize(16,16);
-        
+        this.playerScore = 0;
     }
 
     setColliders()
