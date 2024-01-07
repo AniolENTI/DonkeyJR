@@ -30,7 +30,18 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
         (
             this.enemy, 
             this.scene.platforms
-        );
+        );        
+      /*  this.scene.physics.add.overlap(
+            this.scene.hero,
+            this.enemy,
+            this.onHeroCollision,
+            null,
+            this.scene
+        );*/
+    }
+
+    onHeroCollision(hero, enemy) {
+        this.scene.die();
     }
 
     onGroundCollision(enemy, ground) {
@@ -74,18 +85,15 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
             const isBelowVine = this.scene.vines.getTileAtWorldXY(this.x, this.y + this.height + 1);
     
             if (isAboveVine || isBelowVine) {
-                const vineTile = isAboveVine ? isAboveVine : isBelowVine;
-                const vineWorldPos = this.scene.vines.tileToWorldXY(vineTile.x, vineTile.y);
+                const vineTile = isAboveVine || isBelowVine;  
     
+                const vineWorldPos = this.scene.vines.tileToWorldXY(vineTile.x, vineTile.y);
                 this.x = vineWorldPos.x + this.width / 2;
     
                 const climbDirection = isAboveVine ? -1 : 1;
                 this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
     
-                const atEndOfVine = isBelowVine && vineTile.index === yourVineTileEndIndex;
-                const atTopOfVine = isAboveVine && vineTile.index === yourVineTileTopIndex;
-    
-                if (atEndOfVine || atTopOfVine) {
+                if (isBelowVine) {
                     this.body.setVelocity(0, -gamePrefs.ENEMY_CLIMB_SPEED * climbDirection);
                 }
             } else {
@@ -119,9 +127,6 @@ class redEnemyPrefab extends Phaser.GameObjects.Sprite {
     
         super.preUpdate(time, delta);
     }
-    
-    
-    
     
     
 }

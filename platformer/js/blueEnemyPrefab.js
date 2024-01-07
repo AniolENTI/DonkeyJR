@@ -12,7 +12,7 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
         this.isClimbing = false;
         this.isAbovePlatform = false;
         this.climbDelay = 0;
-        this.climbDelayMax = 1;  
+        this.climbDelayMax = 1;
         this.body.setVelocityX(gamePrefs.ENEMY_SPEED * this.direction);
         this.flipX = !this.flipX;
         this.setColliders();
@@ -32,11 +32,22 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
             this.enemy, 
             this.scene.platforms
         );
+       /* this.scene.physics.add.overlap(
+            this.scene.hero,
+            this.enemy,
+            this.onHeroCollision,
+            null,
+            this.scene
+        );   */
     }
 
     onGroundCollision(enemy, ground) 
     {
         this.deActivate();
+    }
+
+    onHeroCollision(hero, enemy) {
+        this.scene.die();
     }
 
     howItPatrols() {
@@ -71,9 +82,7 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
 
     stopClimbing() {
         if (this.isClimbing) {
-            this.isClimbing = false;            
-            //this.platformCollider = this.scene.physics.add.collider(this.enemy, this.scene.platforms);
-            //this.body.setAllowGravity(true);
+            this.isClimbing = false;
             this.body.setVelocity(0, gamePrefs.ENEMY_CLIMB_SPEED);
         }
     }
@@ -118,7 +127,4 @@ class blueEnemyPrefab extends Phaser.GameObjects.Sprite {
     
         super.preUpdate(time, delta);
     }
-    
-    
-    
 }

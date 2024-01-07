@@ -8,6 +8,7 @@ var gamePrefs=
     HERO_GRAVITY:400,
     ENEMY_SPEED: 45,
     ENEMY_CLIMB_SPEED: 35,
+    MAX_RED_ENEMY: 3
 }
 
 var config = 

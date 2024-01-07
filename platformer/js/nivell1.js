@@ -20,6 +20,8 @@ class nivell1 extends Phaser.Scene
         this.load.spritesheet('red','spr_enemy_red.png',
         {frameWidth:16,frameHeight:16});
         this.load.image('apple','spr_apple.png');
+        this.load.image('banana','spr_banana.png');
+        this.load.image('mango','spr_mango.png');
         this.load.image('key','spr_key.png');
         this.load.spritesheet('donkey','spr_donkey_sr.png',
         {frameWidth:48,frameHeight:32});
@@ -38,12 +40,14 @@ class nivell1 extends Phaser.Scene
         this.load.audio('deathSound', 'sfx_death.wav');
         this.load.audio('jumpSound','sfx_jump.wav');
         this.load.audio('climbSound','sfx_climb.wav');
+        this.load.audio('fruitSound','sfx_fruit.wav');
+
         
         this.load.setPath('assets/maps');
         this.load.tilemapTiledJSON('nivell1','nivell1.json');
 
         this.load.setPath('assets/fonts');
-
+        this.load.bitmapFont('titleFont','titleFont.png','titleFont.xml'); 
         this.scoreText;
     }
 
@@ -68,8 +72,7 @@ class nivell1 extends Phaser.Scene
         this.map.setCollisionByExclusion(-1,true,true,'layer_platforms'); 
         this.map.setCollisionByExclusion(-1,true,true,'layer_ground');
 
-        this.scoreText = this.add.text(gamePrefs.gameWidth - 70, 16, 'SCORE: 0', { fontSize: '15px', fill: '#FFF' });
-        this.scoreText.setFont('PressStart2P-Regular');
+        this.scoreText = this.add.bitmapText(gamePrefs.gameWidth - 75,16,'titleFont','SCORE: 0',8);
         
         this.hero = new heroPrefab(this,18,200,'hero');
         
@@ -81,7 +84,7 @@ class nivell1 extends Phaser.Scene
         this.mario.body.setAllowGravity(false);
         this.mario.body.setImmovable(true);
         
-        this.fruit = new fruitPrefab(this,65, 140,'apple');
+        
 
         this.key = this.physics.add.sprite(120, 40, 'key').setOffset(-48, 0).setDepth(-1);
         this.key.body.setAllowGravity(false);
@@ -90,14 +93,12 @@ class nivell1 extends Phaser.Scene
         this.loadPools();
         this.loadAnimations();
         this.loadSounds();
-        //this.enemy = new enemyPrefab(this,100,55,100,200,'blue');
 
         this.donkey.anims.play('idle_dk');
         this.mario.anims.play('idle_mario');
 
         this.physics.add.collider(this.donkey, this.hero);
         this.physics.add.collider(this.mario, this.hero);
-        this.physics.add.overlap(this.hero, this.fruit, this.addScore, null, this);
         this.physics.add.collider(this.hero, this.key, this.endGame, null, this);
 
 
@@ -119,6 +120,16 @@ class nivell1 extends Phaser.Scene
             }
         );
 
+        this.level_fruits = this.map.getObjectLayer('layer_fruits');
+        this.level_fruits.objects.forEach(function (element)
+        {        
+            this.fruit = new fruitPrefab(this,
+                {
+                 posX:element.x,
+                 posY:element.y,
+                 spriteTag:element.type
+                });     
+        },this);
         
     }
     
@@ -128,6 +139,7 @@ class nivell1 extends Phaser.Scene
         this.jumpSound = this.sound.add('jumpSound');
         this.deathSound = this.sound.add('deathSound');
         this.climbSound = this.sound.add('climbSound');
+        this.fruitSound = this.sound.add('fruitSound');
 
         this.bgm.play();
     }
@@ -205,38 +217,34 @@ class nivell1 extends Phaser.Scene
     {
         this.blueEnemyPool = this.physics.add.group();
         this.redEnemyPool = this.physics.add.group();
-
     }
 
     spawnEnemy()
     {
-        var rnd = Phaser.Math.Between(0,5);
-        if(rnd < 2)
-        {
+        var rnd = Phaser.Math.Between(0,3);        
+        if(rnd < 3){            
             this.createBlueEnemy();
         }
-        else{
+        else
+        {
             this.createRedEnemy();
         }
     }
-    createBlueEnemy()
-    {
-        
+    createBlueEnemy() {
         var _enemy = this.blueEnemyPool.getFirst(false);
-        
+    
         var posX = 100;
         var posY = 56;
-
-        if(!_enemy)
-        {
-            
-            _enemy = new blueEnemyPrefab(this,posX,posY,100,200,'blue');            
+    
+        if (!_enemy) {
+            _enemy = new blueEnemyPrefab(this, posX, posY, 100, 200, 'blue');
             //this.blueEnemyPool.add(_enemy);
-        }else
-        {
-            _enemy.reset(posX,posY);
-        }        
+        } else {
+            _enemy.reset(posX, posY);
+        }
     }
+    
+
     createRedEnemy()
     {
         
@@ -256,19 +264,18 @@ class nivell1 extends Phaser.Scene
         }        
     }
 
-    addScore(hero,fruit)
-    {
-        fruit.disableBody();
-
-        this.score += 100;
-        this.scoreText.setText(`Score: ${this.score}`);
+    addScore()
+    {  
+        this.fruitSound.play();
+        this.score += 400;
+        this.scoreText.setText(`Score:${this.score}`);
     }
 
     die()
     {
         this.deathSound.play();
         this.cameras.main.fade(500, 0, 0, 0);
-
+        this.bgm.stop();
     this.cameras.main.on('camerafadeoutcomplete', function (camera) {
         this.score = 0;
         this.scene.restart();

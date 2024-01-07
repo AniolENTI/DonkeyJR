@@ -7,10 +7,12 @@ class heroPrefab extends Phaser.GameObjects.Sprite
         _scene.physics.world.enable(this);
         this.scene = _scene;
         this.hero = this;
+        this.body.collideWorldBounds = true;
         this.setColliders();
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.isClimbing = false;
         this.hero.body.setSize(16,16);
+        
     }
 
     setColliders()
@@ -30,6 +32,11 @@ class heroPrefab extends Phaser.GameObjects.Sprite
             this.hero,
             this.scene.ground
         );
+        this.scene.physics.add.collider
+        (
+            this.hero,
+            this.scene.ground
+        );        
     }
     
 
