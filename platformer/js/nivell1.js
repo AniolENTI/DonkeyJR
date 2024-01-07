@@ -47,7 +47,6 @@ class nivell1 extends Phaser.Scene
         this.load.setPath('assets/fonts');
         this.load.bitmapFont('titleFont','titleFont.png','titleFont.xml'); 
         this.scoreText;
-        this.currentRedEnemy = 0;
     }
 
     create()
@@ -215,20 +214,17 @@ class nivell1 extends Phaser.Scene
     {
         this.blueEnemyPool = this.physics.add.group();
         this.redEnemyPool = this.physics.add.group();
-
     }
 
     spawnEnemy()
     {
-        var rnd = Phaser.Math.Between(0,5);        
-        if(rnd > 2 && currentRedEnemy < gamePrefs.MAX_RED_ENEMY){
-            console.log(currentRedEnemy);
-            this.createRedEnemy();
-            currentRedEnemy += 1;
+        var rnd = Phaser.Math.Between(0,3);        
+        if(rnd < 3){            
+            this.createBlueEnemy();
         }
         else
         {
-            this.createBlueEnemy();
+            this.createRedEnemy();
         }
     }
     createBlueEnemy()
