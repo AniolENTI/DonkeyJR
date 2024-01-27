@@ -73,7 +73,7 @@ class nivell1 extends Phaser.Scene
         this.map.setCollisionByExclusion(-1,true,true,'layer_platforms'); 
         this.map.setCollisionByExclusion(-1,true,true,'layer_ground');
 
-        this.scoreText = this.add.bitmapText(gamePrefs.gameWidth - 75,16,'titleFont','SCORE: 0',8);
+        this.scoreText = this.add.bitmapText(gamePrefs.gameWidth - 80,16,'titleFont','SCORE: 0',8);
         
         this.hero = new heroPrefab(this,18,200,'hero');
         
