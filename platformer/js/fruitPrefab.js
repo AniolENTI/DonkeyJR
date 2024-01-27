@@ -9,6 +9,8 @@ class fruitPrefab extends Phaser.GameObjects.Sprite
         this.body.allowGravity = false;
         this.scene = _scene;
         this.setColliders();
+        
+        this.collected = false;
     }
 
     setColliders()
@@ -24,17 +26,19 @@ class fruitPrefab extends Phaser.GameObjects.Sprite
     }
 
     disableBody() {
-        this.scene.tweens.add({
-            targets: this.fruit,
-            y: this.fruit.y + 200, 
-            duration: 1500,
-            ease: 'Linear',
-            onComplete: () => 
-            {                
-                this.scene.addScore();
-                this.fruit.destroy();
-            },
-        });
+        if (!this.collected) { 
+            this.collected = true; 
+            this.scene.tweens.add({
+                targets: this.fruit,
+                y: this.fruit.y + 200,
+                duration: 1500,
+                ease: 'Linear',
+                onComplete: () => {
+                    this.scene.addScore();
+                    this.fruit.setActive(false); 
+                },
+            });
+        }
     }
     preUpdate(time,delta)
     {

@@ -35,7 +35,7 @@ var config =
         arcade:
         {
             gravity:{y:gamePrefs.HERO_GRAVITY},
-            debug:true
+            //debug:true
         }
     },
     fps:
